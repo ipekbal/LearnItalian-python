@@ -1,0 +1,327 @@
+WindowManager:
+    MainMenu:
+    TopicMenu:
+    Instructions:
+    Flashcards:
+    Grammar:
+    Tests:
+    Review:
+
+<MainMenu>:
+    name: "main"
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            font_size: 25
+            font_name: 'Quicksand'
+            text_size: self.size
+            halign: 'center'
+            valign: 'bottom'
+            text: "Learn Italian"
+            size_hint: 1, 0.5
+            color: 0,0,0,1
+        BoxLayout:
+            padding: [0, 40, 0, 40]
+            orientation: "vertical"
+            spacing: "40dp"
+
+            Button:
+                text: "Topic: Basic Phrases"
+                # width, height
+                size_hint: 0.5, 1
+                # x, center_x, right
+                # y, center_y, top
+                pos_hint: { "center_x" : 0.5  }
+                background_normal: ''
+                background_color: (0, 172/255, 231/255, 1)
+                on_release:
+                    app.root.current = "topic"
+                    root.manager.transition.direction = "left"
+            Button:
+                text: "Topic: Family"
+                # width, height
+                size_hint: 0.5, 1
+                # x, center_x, right
+                # y, center_y, top
+                pos_hint: { "center_x" : 0.5  }
+                background_normal: ''
+                background_color: (0, 172/255, 231/255, 1)
+                on_release:
+                    app.root.current = "topic"
+                    root.manager.transition.direction = "left"
+            Button:
+                text: "Instructions"
+                size_hint: 0.5, 1
+                pos_hint: { "center_x" : 0.5  }
+                background_normal: ''
+                background_color: (0, 172/255, 231/255, 1)
+                on_release:
+                    app.root.current = "instructions"
+                    root.manager.transition.direction = "left"
+<TopicMenu>
+    name: "topic"
+    BoxLayout:
+        orientation: "vertical"
+        ArrowButton:
+            on_release:
+                app.root.current = "main"
+                root.manager.transition.direction = "right"
+        TopicLabel:
+            text: "Basic Phrases"
+        BoxLayout:
+
+            padding: [0, 40, 0, 40]
+            orientation: "vertical"
+            spacing: "20dp"
+
+            MenuButton:
+                text: "Flashcards"
+                on_release:
+                    app.root.current = "flashcards"
+                    root.manager.transition.direction = "left"
+            MenuButton:
+                text: "Grammar"
+                on_release:
+                    app.root.current = "grammar"
+                    root.manager.transition.direction = "left"
+            MenuButton:
+                text: "Tests"
+                on_release:
+                    app.root.current = "tests"
+                    root.manager.transition.direction = "left"
+            MenuButton:
+                text: "Review"
+                on_release:
+                    app.root.current = "review"
+                    root.manager.transition.direction = "left"
+
+<Instructions>
+    name: "instructions"
+    ArrowButton:
+        on_release:
+            app.root.current = "main"
+            root.manager.transition.direction = "right"
+
+    Label:
+        font_name: 'Quicksand'
+        text_size: self.size
+        pos_hint: {"center_x": 0.6, "center_y" :0.8}
+        color: 0,0,0,1
+        text: root.instructions
+
+
+
+#:set s dp(300)
+<Flashcards>
+    name: "flashcards"
+    orientation: "vertical"
+    TopicLabel:
+        text: "Flashcards"
+    ArrowButton:
+        on_release:
+            app.root.current = "topic"
+            root.manager.transition.direction = "right"
+
+    FloatLayout:
+        canvas:
+            Color:
+                rgba: (0,0,0,1)
+            Line:
+                rectangle:
+                    (self.center_x-s/2, self.center_y-s/2, s, s)
+                width: 1
+
+        #front label (italian)
+        Label:
+            id: frontlabel
+            color: 0,0,0,1
+            text: root.front_card_label
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            # changing the visibility of the label
+            visible: True
+            opacity: 1 if self.visible else 0
+            disabled: not self.visible
+
+        #back label (english)
+        Label:
+            id: backlabel
+            color: 0,0,0,1
+            text: root.back_card_label
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            # changing the visibility of the label
+            visibile: False
+            opacity: 1 if self.visible else 0
+            disabled: not self.visible
+
+
+        #Flip flashcard button
+        RoundedButton:
+            pos_hint: {"center_x" : 0.5, "center_y": 0.19}
+            size_hint: .1, .1
+            on_press:
+                frontlabel.visible = not frontlabel.visible
+                backlabel.visible = not backlabel.visible
+
+
+        #previous flashcard button
+        Button:
+            size_hint: 0.05, 0.1
+            pos_hint: {'center_x': 0.4, 'center_y': 0.19}
+            background_normal: ''
+            background_color: (1,1,1,1)
+            canvas:
+                Color:
+                    rgba: (0, 172/255, 231/255, 1)
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+                    source: "/Users/ipekbal/PycharmProjects/kivy-thelab/venv/arrow.png"
+            on_press:
+                root.previous_card()
+
+        #next flashcard button
+        Button:
+            size_hint: 0.05, 0.1
+            pos_hint: {'center_x': 0.6, 'center_y': 0.19}
+            background_normal: ''
+            background_color: (1,1,1,1)
+            canvas:
+                Color:
+                    rgba: (0, 172/255, 231/255, 1)
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+                    source: "/Users/ipekbal/PycharmProjects/kivy-thelab/venv/arrowright.png"
+            on_press:
+                root.next_card()
+
+
+
+
+<Grammar>
+    name: "grammar"
+    ArrowButton:
+        on_release:
+            app.root.current = "topic"
+            root.manager.transition.direction = "right"
+
+    Label:
+        font_name: 'Quicksand'
+        text_size: self.size
+        pos_hint: {"center_x": 0.6, "center_y" :0.8}
+        color: 0,0,0,1
+        text: "error: this page does not exist."
+
+
+<Tests>
+    name: "tests"
+    BoxLayout:
+        orientation: "vertical"
+        ArrowButton:
+            on_release:
+                app.root.current = "topic"
+                root.manager.transition.direction = "right"
+        TopicLabel:
+            id: question
+            text: root.question
+        BoxLayout:
+            padding: [0, 10, 0, 10]
+            orientation: "vertical"
+            spacing: "20dp"
+
+            TestButton:
+                id: button_a
+                text: root.choice_a
+                # checks if it is the right or wrong answer
+                on_press:
+                    root.check_answer(root.choice_a)
+            TestButton:
+                id: button_b
+                text: root.choice_b
+                # checks if it is the right or wrong answer
+                on_press:
+                    root.check_answer(root.choice_b)
+            TestButton:
+                id: button_c
+                text: root.choice_c
+                # checks if it is the right or wrong answer
+                on_press:
+                    root.check_answer(root.choice_c)
+            TestButton:
+                id: button_d
+                text: root.choice_d
+                # checks if it is the right or wrong answer
+                on_press:
+                    root.check_answer(root.choice_d)
+        Button:
+            size_hint: 0.05, 0.1
+            pos_hint: {'center_x': 0.6, 'center_y': 0.19}
+            background_normal: ''
+            background_color: (1,1,1,1)
+            canvas:
+                Color:
+                    rgba: (0, 172/255, 231/255, 1)
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+                    source: "/Users/ipekbal/PycharmProjects/kivy-thelab/venv/arrowright.png"
+            on_press:
+                root.generate_test()
+
+<Review>
+    name: "review"
+    ArrowButton:
+        on_release:
+            app.root.current = "topic"
+            root.manager.transition.direction = "right"
+    Label:
+        font_name: 'Quicksand'
+        text_size: self.size
+        pos_hint: {"center_x": 0.6, "center_y" :0.8}
+        color: 0,0,0,1
+        text: "error: this page does not exist."
+
+
+<MenuButton@Button>
+    size_hint: 0.5, 1
+    pos_hint: { "center_x" : 0.5  }
+    background_normal: ''
+    background_color: (0, 172/255, 231/255, 1)
+
+<ArrowButton@Button>
+    size_hint: 0.05, 0.1
+    pos_hint: {'center_x': 0.04, 'center_y': 0.8}
+    background_normal: ''
+    background_color: (1,1,1,1)
+    canvas:
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            source: "/Users/ipekbal/PycharmProjects/kivy-thelab/venv/arrow.png"
+
+<TopicLabel@Label>
+    id: topicLabel
+    font_size: 25
+    font_name: 'Quicksand'
+    text_size: self.size
+    halign: 'center'
+    valign: 'bottom'
+    size_hint: 1, 0.5
+    color: 0,0,0,1
+
+<RoundedButton@Button>
+    background_normal: ''
+    background_color: (1,1,1,1)
+    canvas:
+        Color:
+            rgba: (0, 172/255, 231/255, 1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [58]
+
+<TestButton@Button>
+    size_hint: 0.5, 1
+    pos_hint: { "center_x" : 0.5  }
+    background_color: (0, 172/255, 231/255, 1)
+    background_normal: ''
